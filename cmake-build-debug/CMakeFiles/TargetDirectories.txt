@@ -1,0 +1,3 @@
+C:/Users/yauhe/ikt203g21h/Project 2 Stack Calculator/cmake-build-debug/CMakeFiles/Project_2_Stack_Calculator.dir
+C:/Users/yauhe/ikt203g21h/Project 2 Stack Calculator/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/yauhe/ikt203g21h/Project 2 Stack Calculator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
