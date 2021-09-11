@@ -15,7 +15,7 @@ struct  StackRecord
 
 void MakeEmptyStack(Stack stack)
 {
-    stack->topOfStack = -1;
+    stack->topOfStack = EmptyTos;
 }
 
 Stack CreateStack(int capacity)
@@ -31,7 +31,7 @@ Stack CreateStack(int capacity)
 
 int isEmpty(Stack stack)
 {
-    return stack->topOfStack == -1;
+    return stack->topOfStack == EmptyTos;
 }
 
 int isFull(Stack stack)
@@ -65,6 +65,7 @@ int peek(Stack stack)
 
 void enterValue(Stack , char );
 void AdditionOperation(Stack);
+void SubtractionOperation(Stack);
 
 int main ()
 {
@@ -88,6 +89,10 @@ int main ()
         else if(userInput == 43)
         {
             AdditionOperation(stack);
+        }
+        else if (userInput == 45)
+        {
+            SubtractionOperation(stack);
         }
         else
         {
@@ -120,19 +125,54 @@ void AdditionOperation(Stack stack)
         if(peek(stack) != EmptyTos)
         {
             secondOperand = pop(stack);
-
-        } else
+        }
+        else
         {
+            push(stack, firstOperand);
             printf("Not enough values to perform addition on\n");
         }
-    }else{
+    }
+    else
+    {
         printf("No values to perform addition on\n");
     }
 
     if(firstOperand && secondOperand)
     {
-        int sumOfOperants = firstOperand + secondOperand;
+        int sumOfOperands = firstOperand + secondOperand;
         printf("\n");
-        push(stack, sumOfOperants);
+        push(stack, sumOfOperands);
+    }
+}
+
+void SubtractionOperation(Stack stack)
+{
+    int firstOperand = 0;
+    int secondOperand = 0;
+
+    if(peek(stack) != EmptyTos)
+    {
+        firstOperand = pop(stack);
+
+        if(peek(stack) != EmptyTos)
+        {
+            secondOperand = pop(stack);
+
+        } else
+        {
+            push(stack, firstOperand);
+            printf("Not enough values to subtract\n");
+        }
+    }
+    else
+    {
+        printf("No values to perform subtraction on\n");
+    }
+
+    if(firstOperand && secondOperand)
+    {
+        int DifferenceOfOperands = firstOperand - secondOperand;
+        printf("\n");
+        push(stack, DifferenceOfOperands);
     }
 }
