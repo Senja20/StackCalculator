@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 #define EmptyTos -1
-#define MinStackSize 5
 #define MaxStackSize 50
 
-struct  StackRecord {
+struct  StackRecord
+{
     int capacity;
     int topOfStack;
     int* array;
@@ -15,7 +15,7 @@ struct  StackRecord {
 
 void MakeEmptyStack(Stack stack)
 {
-    stack->topOfStack = EmptyTos;
+    stack->topOfStack = -1;
 }
 
 Stack CreateStack(int capacity)
@@ -52,28 +52,87 @@ void push(Stack stack, int item)
 int pop(Stack stack)
 {
     if (isEmpty(stack))
-        return INT_MIN;
+        return EmptyTos;
     return stack->array[stack->topOfStack--];
 }
 
 int peek(Stack stack)
 {
     if (isEmpty(stack))
-        return INT_MIN;
+        return EmptyTos;
     return stack->array[stack->topOfStack];
 }
+
+void enterValue(Stack , char );
+void AdditionOperation(Stack);
 
 int main ()
 {
     Stack stack = CreateStack(MaxStackSize);
+    char userInput;
 
-    push(stack, 10);
-    push(stack, 20);
-    push(stack, 30);
+    while (1)
+    {
+        printf("Enter:");
+        scanf("%c", &userInput);
+        getchar();
 
-    printf("%d popped from stack\n", pop(stack));
-    printf("%d popped from stack\n", peek(stack));
+        if(userInput == 'q')
+        {
+            break;
+        }
+        else if(userInput > 47 && userInput < 58)
+        {
+            enterValue(stack,  userInput);
+        }
+        else if(userInput == 43)
+        {
+            AdditionOperation(stack);
+        }
+        else
+        {
+            printf("\nInvalid input\n");
+        }
 
+    }
     return 0;
 }
 
+void enterValue(Stack stack, char value)
+{
+    int IntValue = value - 48;
+
+    if(!isFull(stack))
+        push(stack, IntValue);
+    else
+        printf("No more space for more values!");
+}
+
+void AdditionOperation(Stack stack)
+{
+    int firstOperand = 0;
+    int secondOperand = 0;
+
+    if(peek(stack) != EmptyTos)
+    {
+        firstOperand = pop(stack);
+
+        if(peek(stack) != EmptyTos)
+        {
+            secondOperand = pop(stack);
+
+        } else
+        {
+            printf("Not enough values to perform addition on\n");
+        }
+    }else{
+        printf("No values to perform addition on\n");
+    }
+
+    if(firstOperand && secondOperand)
+    {
+        int sumOfOperants = firstOperand + secondOperand;
+        printf("\n");
+        push(stack, sumOfOperants);
+    }
+}
