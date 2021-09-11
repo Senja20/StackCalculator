@@ -1,6 +1,9 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+
 
 #define EmptyTos -1
 #define MaxStackSize 50
@@ -63,62 +66,125 @@ int peek(Stack stack)
     return stack->array[stack->topOfStack];
 }
 
-void enterValue(Stack , char );
+
+void enterValue(Stack , int );
 void AdditionOperation(Stack);
 void SubtractionOperation(Stack);
 void MultiplicationOperation(Stack);
 void DivisionOperation(Stack);
 
+int isNumber(char []);
+int convertToNumber(char []);
+
+int isOperator(char []);
+
 int main ()
 {
     Stack stack = CreateStack(MaxStackSize);
-    char userInput;
+    char userInput[6];
 
     while (1)
     {
         printf("Enter:");
-        scanf("%c", &userInput);
-        getchar();
+        gets(userInput);
 
-        if(userInput == 'q')
+        if(isNumber(userInput)) // if a number
         {
-            break;
+            int tempNumber = convertToNumber(userInput);
+            enterValue(stack,  tempNumber);
         }
-        else if(userInput > 47 && userInput < 58) // if a number
-        {
-            enterValue(stack,  userInput);
-        }
-        else if(userInput == 43) // addition
+        else if(isOperator(userInput) == 43) // addition
         {
             AdditionOperation(stack);
         }
-        else if (userInput == 45) // subtraction
+        else if (isOperator(userInput) == 45) // subtraction
         {
             SubtractionOperation(stack);
         }
-        else if(userInput == 42 || userInput == 120) // multiplication
+        else if(isOperator(userInput) == 42) // multiplication
         {
             MultiplicationOperation(stack);
         }
-        else if (userInput == 47 || userInput == 58)
+        else if (isOperator(userInput) == 47) // Division
         {
             DivisionOperation(stack);
         }
         else
         {
             printf("\nInvalid input\n");
+            break;
         }
 
     }
     return 0;
 }
 
-void enterValue(Stack stack, char value)
+int isOperator(char str[])
 {
-    int IntValue = value - 48; // from char to int
+    int operator = 0;
+    for (int i = 0; i < strlen(str); ++i)
+    {
+        if(str[i] == 43) // addition
+        {
+            operator = 43;
+        }
+        else if (str[i] == 45) // subtraction
+        {
+            operator = 45;
+        }
+        else if(str[i] == 42 || str[i] == 120) // multiplication
+        {
+            operator = 42;
+        }
+        else if (str[i] == 47 || str[i] == 58) // Division
+        {
+            operator = 47;
+        }
+    }
+
+    return operator;
+
+}
+
+int isNumber(char str[])
+{
+    int i;
+    int count = 0;
+    int isNumber = 0;
+
+
+    for(i=0; str[i] >= 48 && str[i] <= 57 ;i++)
+    {
+        count++;
+    }
+
+    if (count == strlen(str))
+    {
+        isNumber = 1;
+        return isNumber;
+    }
+    else
+    {
+        return isNumber;
+    }
+}
+
+int convertToNumber(char str[])
+{
+    char *text;
+    long value;
+    int intValue;
+
+    value = strtol(str, &text, 10);
+    intValue = value;
+    return intValue;
+}
+
+void enterValue(Stack stack, int value)
+{
 
     if(!isFull(stack))
-        push(stack, IntValue);
+        push(stack, value);
     else
         printf("No more space for more values!");
 }
@@ -214,7 +280,6 @@ void MultiplicationOperation(Stack stack)
     {
         printf("No values to perform subtraction on\n");
     }
-
     if(firstOperand && secondOperand)
     {
         int ProductOfOperands = firstOperand * secondOperand;
@@ -231,7 +296,6 @@ void DivisionOperation(Stack stack)
     if(peek(stack) != EmptyTos)
     {
         denominator = pop(stack);
-
         if(peek(stack) != EmptyTos || peek(stack) != 0)
         {
             numerator = pop(stack);
@@ -248,7 +312,6 @@ void DivisionOperation(Stack stack)
     {
         printf("No values to perform subtraction on\n");
     }
-
     if(numerator && denominator)
     {
         if(numerator%denominator == 0)
@@ -271,12 +334,8 @@ void DivisionOperation(Stack stack)
                 if(numerator % mod == 0 && denominator % mod == 0)
                     gcd = mod; // The number that fills the requirement becomes gcd
             }
-
             printf("%i/%i\n", numerator/gcd, denominator/gcd);
             printf("This is not an integer and therefore cannot be pushed to the stack\n");
-
         }
-
     }
-
 }
