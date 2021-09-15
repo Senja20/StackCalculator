@@ -7,8 +7,6 @@
 #IncludeRegexTransform: 
 
 C:/Users/yauhe/ikt203g21h/Project 2 Stack Calculator/main.c
-limits.h
--
 stdio.h
 -
 stdlib.h

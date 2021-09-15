@@ -1,9 +1,6 @@
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-
 
 #define EmptyTos -1
 #define MaxStackSize 50
@@ -13,7 +10,6 @@ struct  StackRecord
     int capacity;
     int topOfStack;
     int* array;
-
 }; typedef struct StackRecord* Stack;
 
 void MakeEmptyStack(Stack stack)
@@ -48,7 +44,7 @@ void push(Stack stack, int item)
     if (isFull(stack))
         return;
     stack->array[++stack->topOfStack] = item;
-    printf("%d pushed to stack\n", item);
+    //printf("%d pushed to stack\n", item);
 }
 
 // Function to remove an item from stack.  It decreases top by 1
@@ -75,7 +71,6 @@ void DivisionOperation(Stack);
 
 int isNumber(char []);
 int convertToNumber(char []);
-
 int isOperator(char []);
 
 int main ()
@@ -148,12 +143,9 @@ int isOperator(char str[])
 
 int isNumber(char str[])
 {
-    int i;
-    int count = 0;
-    int isNumber = 0;
+    int count = 0, isNumber = 0;
 
-
-    for(i=0; str[i] >= 48 && str[i] <= 57 ;i++)
+    for(int i=0; str[i] >= 48 && str[i] <= 57 ;i++)
     {
         count++;
     }
@@ -186,7 +178,7 @@ void enterValue(Stack stack, int value)
     if(!isFull(stack))
         push(stack, value);
     else
-        printf("No more space for more values!");
+        printf("No more space for more values!\n");
 }
 
 void AdditionOperation(Stack stack)
@@ -220,6 +212,7 @@ void AdditionOperation(Stack stack)
         int sumOfOperands = firstOperand + secondOperand;
         printf("\n");
         push(stack, sumOfOperands);
+        printf("Result: %i\n", sumOfOperands);
     }
 }
 
@@ -250,9 +243,10 @@ void SubtractionOperation(Stack stack)
 
     if(firstOperand && secondOperand)
     {
-        int DifferenceOfOperands = firstOperand - secondOperand;
+        int DifferenceOfOperands = secondOperand - firstOperand;
         printf("\n");
         push(stack, DifferenceOfOperands);
+        printf("Result: %i\n", DifferenceOfOperands);
     }
 }
 
@@ -272,7 +266,7 @@ void MultiplicationOperation(Stack stack)
         } else
         {
             push(stack, firstOperand);
-            printf("Not enough values to subtract\n");
+            printf("Not enough values to multiply\n");
             firstOperand = 0; // null out value, just in case
         }
     }
@@ -285,6 +279,7 @@ void MultiplicationOperation(Stack stack)
         int ProductOfOperands = firstOperand * secondOperand;
         printf("\n");
         push(stack, ProductOfOperands);
+        printf("Result: %i\n", ProductOfOperands);
     }
 }
 
@@ -293,32 +288,41 @@ void DivisionOperation(Stack stack)
     int numerator = 0;
     int denominator = 0;
 
-    if(peek(stack) != EmptyTos)
+    if (peek(stack) == 0)
+    {
+        printf("Cannot divide by zero\n");
+        pop(stack);
+        printf("Zero is removed from the stack\n");
+    }
+    else if(peek(stack) != EmptyTos)
     {
         denominator = pop(stack);
-        if(peek(stack) != EmptyTos || peek(stack) != 0)
+        
+        if(peek(stack) != EmptyTos)
         {
             numerator = pop(stack);
         }
         else
         {
-            printf("hello");
             push(stack, numerator);
-            printf("Not sufficient values to subtract\n");
+            printf("Not sufficient values to divide\n");
             numerator = 0; // null out value, just in case
         }
     }
+
     else
     {
         printf("No values to perform subtraction on\n");
     }
-    if(numerator && denominator)
+
+    if(numerator != 0 && denominator != 0)
     {
         if(numerator%denominator == 0)
         {
             int QuotientOfOperand = numerator / denominator;
             printf("\n");
             push(stack, QuotientOfOperand);
+            printf("Result: %i\n", QuotientOfOperand);
         }
         else if(numerator%denominator != 0)
         {
@@ -334,8 +338,13 @@ void DivisionOperation(Stack stack)
                 if(numerator % mod == 0 && denominator % mod == 0)
                     gcd = mod; // The number that fills the requirement becomes gcd
             }
+
             printf("%i/%i\n", numerator/gcd, denominator/gcd);
             printf("This is not an integer and therefore cannot be pushed to the stack\n");
+
+            push(stack, numerator);
+            push(stack, denominator);
+
         }
     }
 }
